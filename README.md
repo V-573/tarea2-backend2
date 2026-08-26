@@ -94,7 +94,7 @@ Respuesta Exitosa (201 Created)
   }
 }
 ```
-![captura desde MongoDB](./assets/capturaMongo.jpg)
+![captura desde MongoDB](./src/assets/capturaMongo.jpg)
 
 Posibles Respuestas de Error
 400 Bad Request: Datos faltantes o formato inválido (Zod Validation Error).
