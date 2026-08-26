@@ -1,7 +1,7 @@
 # TAREA1 - BACKEND2
 
 ## 📌 Temática Elegida
- API REST para la gestión y reserva de eventos en línea.
+ API REST para la gestión y reserva de zonas comunes en unidad residencial.
 
 ---
 
@@ -37,27 +37,7 @@ Bash
 npm run dev
 El servidor estará escuchando en la URL base: http://localhost:8080 (o el puerto configurado en el archivo .env).
 ```
----
 
-```
-📁 Estructura del Proyecto
-
-├── .env                  # Variables de entorno
-├── .gitignore            # Archivos excluidos de Git
-├── app.js                # Configuración global de Express y middlewares
-├── server.js             # Punto de entrada y arranque del servidor
-├── package.json          # Dependencias y scripts
-└── src/
-    ├── config/           # Configuración centralizada de la app
-    ├── controllers/      # Gestión de peticiones HTTP y respuestas
-    ├── dao/              # Capa de acceso directo a datos
-    ├── middlewares/      # Middlewares de validación y control de errores
-    ├── models/           # Definición de clases/modelos base
-    ├── repositories/     # Abstracción de persistencia entre DAO y servicios
-    ├── routes/           # Definición de endpoints y enrutado de Express
-    ├── services/         # Capa de lógica de negocio principal
-    └── utils/            # Funciones auxiliares y formateadores
-```
 ---
 
 **Rutas Disponibles (Endpoints)**
@@ -65,8 +45,103 @@ El servidor estará escuchando en la URL base: http://localhost:8080 (o el puert
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
 | GET | /api/health | Verifica el estado del servidor y el tiempo de ejecución (uptime). |
-| GET | /api/events | Obtiene la lista global de eventos registados. |
-| POST | /api/sessions/login | Endpoint base para inicio de sesión (Pendiente de implementación). |
+| GET | /api/events | Obtiene la lista global de eventos registados. (Pendiente de implementación).|
+| POST | /api/sessions/register | Endpoint base para crear un usuario. |
+| POST | /api/sessions/login | Endpoint base para inicio de sesión. |
 | POST | /api/sessions/logout | Endpoint base para cierre de sesión (Pendiente de implementación). |
 
 ---
+
+
+API de Autenticación - Módulo de Sesiones
+Documentación técnica para los endpoints de registro e inicio de sesión de la API construida en Express, MongoDB (Mongoose) y arquitectura en capas.
+
+Requisitos Generales
+Base URL: http://localhost:8080/api/sessions
+
+Headers requeridos:
+
+HTTP
+Content-Type: application/json
+Endpoints
+1. Registrar Usuario
+Registra un nuevo usuario en el sistema. Realiza validaciones de entrada con Zod, encripta la contraseña usando bcryptjs y almacena los datos en MongoDB.
+
+Método: POST
+
+URL: http://localhost:8080/api/sessions/register
+
+Cuerpo de la Petición (Request Body)
+```JSON
+{
+  "first_name": "monik",
+  "last_name": "gaviria",
+  "email": "monik@email.com",
+  "password": "123456"
+}
+```
+
+Respuesta Exitosa (201 Created)
+```JSON
+{
+  "status": "success",
+  "message": "Usuario registrado correctamente",
+  "payload": {
+    "first_name": "monik",
+    "last_name": "gaviria",
+    "email": "monik@email.com",
+    "role": "user"
+  }
+}
+Posibles Respuestas de Error
+400 Bad Request: Datos faltantes o formato inválido (Zod Validation Error).
+
+409 Conflict: El correo electrónico ya se encuentra registrado.
+
+2. Iniciar Sesión
+Autentica a un usuario existente comparando sus credenciales con el hash almacenado en la base de datos.
+
+Método: POST
+
+URL: http://localhost:8080/api/sessions/login
+
+Cuerpo de la Petición (Request Body)
+```JSON
+{
+  "email": "monik@email.com",
+  "password": "123456"
+}
+```
+
+Respuesta Exitosa (200 OK)
+```JSON
+{
+  "status": "success",
+  "message": "Inicio de sesión exitoso",
+  "payload": {
+    "id": "6a8e9c63f1148e9077e321ad",
+    "first_name": "monik",
+    "email": "monik@email.com",
+    "role": "user"
+  }
+}
+```
+
+Posibles Respuestas de Error
+400 Bad Request: Formato de correo o contraseña inválido.
+
+401 Unauthorized: El correo no existe o la contraseña no coincide.
+
+Estructura del Proyecto (Arquitectura en Capas)
+Plaintext
+src/
+├── config/          # Variables de entorno y conexión a DB
+├── controllers/     # Manejo de req/res HTTP
+├── daos/            # Consultas directas con Mongoose
+├── middlewares/     # Validación de datos con Zod y errores
+├── models/          # Schemas de Mongoose (MongoDB)
+├── repositories/    # Abstracción de acceso a datos
+├── routers/         # Definición de rutas de la API
+├── schemas/         # Esquemas de validación con Zod
+├── services/        # Lógica de negocio (bcrypt, reglas de dominio)
+└── utils/           # Utilidades de encriptación
