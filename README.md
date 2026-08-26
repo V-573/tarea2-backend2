@@ -94,7 +94,7 @@ Respuesta Exitosa (201 Created)
   }
 }
 ```
-
+![captura desde MongoDB](./assets/capturaMongo.jpg)
 
 Posibles Respuestas de Error
 400 Bad Request: Datos faltantes o formato inválido (Zod Validation Error).
@@ -131,6 +131,8 @@ Respuesta Exitosa (200 OK)
   }
 }
 ```
+
+![captura desde Postman](./src/assets/capturaPostman.jpg)
 
 Posibles Respuestas de Error
 400 Bad Request: Formato de correo o contraseña inválido.
