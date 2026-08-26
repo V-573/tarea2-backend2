@@ -94,6 +94,8 @@ Respuesta Exitosa (201 Created)
   }
 }
 ```
+
+
 Posibles Respuestas de Error
 400 Bad Request: Datos faltantes o formato inválido (Zod Validation Error).
 
