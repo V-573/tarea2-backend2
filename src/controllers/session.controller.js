@@ -22,9 +22,19 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    res.status(501).json({ status: 'info', message: 'Not implemented' });
+    console.log(req.body)
+    const userPayload = await userService.loginUser(req.body);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Inicio de sesión exitoso',
+      payload: userPayload
+    });
   } catch (error) {
-    next(error);
+    res.status(error.statusCode || 500).json({
+      status: 'error',
+      message: error.message || 'Error interno del servidor'
+    });
   }
 };
 
