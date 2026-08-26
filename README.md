@@ -93,10 +93,13 @@ Respuesta Exitosa (201 Created)
     "role": "user"
   }
 }
+```
 Posibles Respuestas de Error
 400 Bad Request: Datos faltantes o formato inválido (Zod Validation Error).
 
 409 Conflict: El correo electrónico ya se encuentra registrado.
+
+---
 
 2. Iniciar Sesión
 Autentica a un usuario existente comparando sus credenciales con el hash almacenado en la base de datos.
@@ -133,7 +136,8 @@ Posibles Respuestas de Error
 401 Unauthorized: El correo no existe o la contraseña no coincide.
 
 Estructura del Proyecto (Arquitectura en Capas)
-Plaintext
+
+```
 src/
 ├── config/          # Variables de entorno y conexión a DB
 ├── controllers/     # Manejo de req/res HTTP
@@ -145,3 +149,5 @@ src/
 ├── schemas/         # Esquemas de validación con Zod
 ├── services/        # Lógica de negocio (bcrypt, reglas de dominio)
 └── utils/           # Utilidades de encriptación
+
+```
