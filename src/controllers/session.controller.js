@@ -11,19 +11,18 @@ export const register = async (req, res, next) => {
     });
   } catch (error) {
     // Pasa el error al middleware global de errores
-    res.status(error.statusCode || 500).json({
-      status: 'error',
-      message: error.message || 'Error interno del servidor'
-    });
+    // res.status(error.statusCode || 500).json({
+    //   status: 'error',
+    //   message: error.message || 'Error interno del servidor'
+    // });
+next(error);
+
   }
 };
 
-
-
 export const login = async (req, res, next) => {
   try {
-    console.log(req.body)
-    const userPayload = await userService.loginUser(req.body);
+      const userPayload = await userService.loginUser(req.body);
 
     res.status(200).json({
       status: 'success',
@@ -31,10 +30,11 @@ export const login = async (req, res, next) => {
       payload: userPayload
     });
   } catch (error) {
-    res.status(error.statusCode || 500).json({
-      status: 'error',
-      message: error.message || 'Error interno del servidor'
-    });
+    // res.status(error.statusCode || 500).json({
+    //   status: 'error',
+    //   message: error.message || 'Error interno del servidor'
+    // });
+    next(error);
   }
 };
 
